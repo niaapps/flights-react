@@ -1,0 +1,23 @@
+.App {
+  font-family: Georgia;
+  text-align: center;
+  background: seashell;
+}
+
+button {
+  padding: 10px;
+  color: white;
+  background: lightskyblue;
+  border-radius: 10px;
+  border: 0px;
+  margin: 10px;
+}
+
+button:hover {
+  background: greenyellow;
+  color: black;
+}
+
+li {
+  list-style: none;
+}
