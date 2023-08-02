@@ -2,12 +2,12 @@ import "./styles.css";
 
 import { useState } from "react";
 
-const Header = ({ height, children }) => (
+const Header = ({ children }) => (
   <div
     style={{
       width: "auto",
       alignItems: "center",
-      justifyContent: "center"
+      justifyContent: "center",
     }}
   >
     <img
@@ -26,27 +26,23 @@ const Footer = ({ height, children }) => (
       display: "flex",
       background: "lightblue",
       alignItems: "center",
-      justifyContent: "center"
+      justifyContent: "center",
     }}
   >
     {children}
   </div>
 );
 
-const Message = ({ place }) => {
-  let template;
-  if (place === "" || place === undefined) {
-    template = <h3>No destination chosen yet</h3>;
-  } else {
-    template = <h3>You chose {place} as your next travel Destination.</h3>;
-  }
-  return template;
-};
+const Message = ({ place }) =>
+  typeof place === "undefined" ? (
+    <h3>No destination chosen yet</h3>
+  ) : (
+    <h3>You chose {place} as your next travel destination.</h3>
+  );
 
 const Itinerary = ({ place }) => {
-  let template;
   if (place === "Miami, Florida") {
-    template = (
+    return (
       <p>
         <ul>
           <li>Possible Itinerary</li>
@@ -57,7 +53,7 @@ const Itinerary = ({ place }) => {
       </p>
     );
   } else if (place === "Nassau, Bahamas") {
-    template = (
+    return (
       <p>
         <ul>
           <li>Possible Itinerary</li>
@@ -68,7 +64,7 @@ const Itinerary = ({ place }) => {
       </p>
     );
   } else if (place === "San Diego, California") {
-    template = (
+    return (
       <p>
         <ul>
           <li>Possible Itinerary</li>
@@ -78,24 +74,21 @@ const Itinerary = ({ place }) => {
         </ul>
       </p>
     );
-  } else {
-    template = (
+  } else if (typeof place === "undefined") {
+    return (
       <p> No suggested itinerary because no destination has been chosen yet.</p>
     );
   }
-  return template;
 };
 
 const TravelPicker = () => {
-  const places = ["Miami, Florida", "Nassau, Bahamas", "San Diego, California"];
-  const [place, setPlace] = useState("");
-  const COLORS = ["lightblue", "lemonchiffon", "lightpink", "plum"];
-  const [currentColor, setCurrentColor] = useState(COLORS[3]);
-
-  const generateFlight = (a) => {
-    setPlace(places[a]);
-    setCurrentColor(COLORS[a]);
-  };
+  const destinations = [
+    { name: "Miami, Florida", color: "plum" },
+    { name: "Nassau, Bahamas", color: "lemonchiffon" },
+    { name: "San Diego, California", color: "lightpink" },
+  ];
+  const [destinationIndex, setDestinationIndex] = useState();
+  // This will be null by default
 
   return (
     <div
@@ -105,32 +98,31 @@ const TravelPicker = () => {
         gap: 24,
         alignItems: "center",
         justifyContent: "center",
-        background: currentColor
+        background:
+          typeof destinations[destinationIndex] === "undefined"
+            ? "peachpuff"
+            : destinations[destinationIndex].color,
       }}
     >
-      <button
-        onClick={() => {
-          generateFlight(0);
-        }}
-      >
-        {places[0]}
+      <button onClick={() => setDestinationIndex(0)}>Miami, Florida</button>
+      <button onClick={() => setDestinationIndex(1)}>Nassau, Bahamas</button>
+      <button onClick={() => setDestinationIndex(2)}>
+        San Diego, California
       </button>
-      <button
-        onClick={() => {
-          generateFlight(1);
-        }}
-      >
-        {places[1]}
-      </button>
-      <button
-        onClick={() => {
-          generateFlight(2);
-        }}
-      >
-        {places[2]}
-      </button>
-      <Message place={place}></Message>
-      <Itinerary place={place}></Itinerary>
+      <Message
+        place={
+          typeof destinations[destinationIndex] === "undefined"
+            ? undefined
+            : destinations[destinationIndex].name
+        }
+      />
+      <Itinerary
+        place={
+          typeof destinations[destinationIndex] === "undefined"
+            ? undefined
+            : destinations[destinationIndex].name
+        }
+      />
     </div>
   );
 };
